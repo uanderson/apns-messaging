@@ -52,7 +52,7 @@ public class ApnsMessaging {
 
   public static ApnsMessaging of(@NonNull ApnsKey apnsKey) {
     Objects.requireNonNull(apnsKey, "Apns key must not be null");
-    return of(apnsKey, Environment.PRODUCTION);
+    return of(apnsKey, AppleEnvironment.PRODUCTION);
   }
 
   public static ApnsMessaging of(@NonNull ApnsKey apnsKey, @NonNull Environment environment) {
@@ -155,14 +155,14 @@ public class ApnsMessaging {
    * Defines URL's to either production and development
    * environments.
    */
-  public enum Environment {
+  public enum AppleEnvironment implements Environment {
 
     DEVELOPMENT("https://api.development.push.apple.com/3/device/"),
     PRODUCTION("https://api.push.apple.com/3/device/");
 
     private final String url;
 
-    private Environment(String url) {
+    private AppleEnvironment(String url) {
       this.url = url;
     }
 
