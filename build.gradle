@@ -1,6 +1,7 @@
 plugins {
   id 'java-library'
   id 'maven-publish'
+  id 'signing'
 }
 
 repositories {
@@ -13,9 +14,9 @@ dependencies {
   implementation 'io.jsonwebtoken:jjwt-jackson:0.11.1'
   implementation 'com.github.spotbugs:spotbugs-annotations:4.0.1'
 
-  testImplementation "com.github.tomakehurst:wiremock:2.26.3"
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.1'
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.1'
+  testImplementation 'com.github.tomakehurst:wiremock:2.26.3'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 }
 
 test {
@@ -35,6 +36,58 @@ publishing {
       version = '0.1.0'
 
       from components.java
+      versionMapping {
+        usage('java-api') {
+          fromResolutionOf('runtimeClasspath')
+        }
+        usage('java-runtime') {
+          fromResolutionResult()
+        }
+      }
+
+      pom {
+        name = 'APNS Messaging'
+        description = 'Simple library to send APNS notifications'
+        url = 'https://github.com/uanderson/apns-messaging'
+
+        licenses {
+          license {
+            name = 'MIT License'
+            url = 'https://opensource.org/licenses/MIT'
+          }
+        }
+
+        developers {
+          developer {
+            id = 'uanderson'
+            name = 'Uanderson Soares'
+            email = 'x@usoar.es'
+          }
+        }
+
+        scm {
+          url = 'https://github.com/uanderson/apns-messaging'
+          connection = 'scm:git:https://github.com/uanderson/apns-messaging.git'
+          developerConnection = 'scm:git:https://github.com/uanderson/apns-messaging.git'
+        }
+      }
     }
+  }
+
+  repositories {
+    maven {
+      url = version.endsWith('SNAPSHOT')
+        ? 'https://oss.sonatype.org/content/repositories/snapshots'
+        : 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+
+      credentials {
+        username = SONATYPE_NEXUS_USERNAME
+        password = SONATYPE_NEXUS_PASSWORD
+      }
+    }
+  }
+
+  signing {
+    sign publishing.publications.maven
   }
 }

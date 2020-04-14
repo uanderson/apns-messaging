@@ -6,14 +6,6 @@ It uses Apple's HTTP/2-based APNs protocol and supports token-based authenticati
 
 This library is used in production by a few projects, but its API can change in the future.
 
-# Building
-
-Building it locally and adding to maven local.
-
-````
-./grade publishToMavenLocal
-````
-
 # Usage
 
 ### Dependencies
